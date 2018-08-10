@@ -16,7 +16,7 @@ def create_game():
 
 @app.route("/")
 def index():
-    return dumps(running_games)
+    return dumps(running_games.keys())
 
 
 @app.route("/new-game")
