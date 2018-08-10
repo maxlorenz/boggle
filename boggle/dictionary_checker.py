@@ -1,7 +1,5 @@
 """This module is concerned with creating sets from dictionaries"""
 
-DICTIONARY_PATH = '../dictionary.txt'
-
 
 def set_from_file(file_path):
     "Returns a set containing all words in `file_path`"
