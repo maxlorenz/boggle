@@ -1,3 +1,4 @@
+"""Holds all information to play Boggle"""
 from dictionary_checker import set_from_file
 from board import Board
 from timer import StopWatch

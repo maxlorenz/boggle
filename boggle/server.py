@@ -1,3 +1,5 @@
+"""Python server to host multiple running games"""
+
 from json import dumps
 from uuid import uuid4
 

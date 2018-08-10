@@ -1,4 +1,8 @@
+"""Boggle board logic"""
+
+
 def list_to_grid(input_list, grid_size=4):
+    "Convert a 1d-array to a 2d-grid"
     grid = []
 
     while len(input_list) >= grid_size:
@@ -9,13 +13,21 @@ def list_to_grid(input_list, grid_size=4):
 
 
 def board_from_file(file_path, grid_size=4):
+    "Load a Boggle board from a .txt file"
     with open(file_path, 'r') as board_file:
         board_line = board_file.readline()
         fields = board_line.split(', ')
         return list_to_grid(fields, grid_size)
 
 
+def matches(letter, board_letter):
+    "Returns true if letter matches board_letter"
+    return ((letter.lower() == board_letter.lower()) or (board_letter == '*'))
+
+
 class Board():
+    "Boggle board creation and word finding"
+
     def __init__(self, dictionary_file):
         self.load_file(dictionary_file)
 
@@ -33,17 +45,13 @@ class Board():
     def _board_size(self):
         return len(self.board)
 
-    def _matches(self, letter, board_letter):
-        return ((letter.lower() == board_letter.lower())
-                or (board_letter == '*'))
-
     def _find_letter(self, letter):
         pos = [[x, y] for x in range(self._board_size())
                for y in range(self._board_size())]
 
         for [x, y] in pos:
             board_letter = self.board[x][y]
-            if self._matches(letter, board_letter):
+            if matches(letter, board_letter):
                 yield (board_letter, x, y)
 
     def _valid_position(self, x, y):
@@ -68,13 +76,16 @@ class Board():
             (letter, _, _) = neighbor
             first_letter, rest = word[0], word[1:]
 
-            if (self._matches(first_letter, letter)
+            if (matches(first_letter, letter)
                     and self._check_word(neighbor, rest)):
                 return True
 
         return False
 
     def check_word(self, word):
+        """Returns True if the word is found on the board
+
+        Uses simple bfs"""
         first_letter, rest = word[0], word[1:]
 
         for possible_start in self._find_letter(first_letter):
